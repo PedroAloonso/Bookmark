@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
+    <title>Library</title>
+</head>
+<body>
+    <div class="main-container">
+        <div class="sidebar">
+            <h1>Library</h1>
+            <ul>
+                <li><button id="newBookBtn">New Book</button></li>
+            </ul>
+        </div>
+
+        <div class="card-container">
+            
+        </div>
+    </div>
+    <div class="register-book-section" style="display: none;">
+        <svg viewBox="0 0 24 24" id="close">
+            <path fill="currentColor" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+        </svg>
+
+        <form class="book-register">
+            <h1>Add your book</h1>
+
+            <div>
+                <label for="titleInput">Title:</label>
+                <input type="text" name="" id="titleInput">
+            </div>
+            <div>
+                <label for="authorInput">Author:</label>
+                <input type="text" name="" id="authorInput">
+            </div>
+            <div>
+                <label for="pagesInput">Pages:</label>
+                <input type="number" name="" id="pagesInput">
+            </div>
+
+            <div id="container">
+                <p>Readed:</p>
+                <div>
+                    <input type="radio" name="isRead" id="no">
+                    <label for="no">NO</label>
+
+                    <input type="radio" name="isRead" id="yes">
+                    <label for="yes">YES</label>
+
+                </div>
+            </div>
+            
+            <button type="button" id="addBookBtn">ADD</button>
+            
+        </form>
+    </div>
+    <script src="./script.js" defer></script>
+</body>
+</html>
