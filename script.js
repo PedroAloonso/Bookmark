@@ -19,13 +19,21 @@ function toggleReadColor(element, book) {
     element.classList.toggle('not-read', book.isRead == false)
 }
 
-function toggleBookRead(element, book) {
+function toggleBookRead(e) {
+    let title = e.target.parentElement.firstChild.textContent
+    let bookIndex = searchInLibrary(title)
+    let book = myLibrary[bookIndex]
+    
+    console.log()
     if (book.isRead == true) {
         book.isRead = false
+        e.target.innerHTML = 'Not Read'
     } else {
         book.isRead = true
+        e.target.innerHTML = 'Read'
     }
-    toggleReadColor(element, book)
+    
+    toggleReadColor(e.target, a)
 }
 
 function displayBook(book) {
@@ -55,7 +63,9 @@ function displayBook(book) {
     pagesElement.innerHTML = book.pages + ' pages'
     removeBtnElement.innerHTML = 'Remove'
     
+    readBtnElement.onclick = toggleBookRead
     removeBtnElement.onclick = removeBook
+
 
     if (book.isRead) {
         readBtnElement.innerText = 'Read'
