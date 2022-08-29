@@ -46,12 +46,9 @@ function displayBook(book) {
     let readBtnElement = document.createElement('button')
     let removeBtnElement = document.createElement('button')
     
-    card.id = 'teste1'
     titleElement.id = 'title'
     authorElement.id = 'author'
     pagesElement.id = 'pages'
-    readBtnElement.id = 'teste'
-    
     
     card.classList.add('card')
     readBtnElement.classList.add('btn')
