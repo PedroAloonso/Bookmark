@@ -11,8 +11,7 @@ function addBookToLibrary(book){
     myLibrary.push(book)
 }
 
-
-// Display the books in myLibrary variable
+// Change text and color in button read
 
 function toggleReadColor(element, book) {
     element.classList.toggle('read', book.isRead == true)
@@ -32,8 +31,10 @@ function toggleBookRead(e) {
         e.target.innerHTML = 'Read'
     }
     
-    toggleReadColor(e.target, a)
+    toggleReadColor(e.target, book)
 }
+
+// Add book card in HTML
 
 function displayBook(book) {
     cardContainer = document.querySelector('.card-container')
@@ -62,7 +63,6 @@ function displayBook(book) {
     readBtnElement.onclick = toggleBookRead
     removeBtnElement.onclick = removeBook
 
-
     if (book.isRead) {
         readBtnElement.innerText = 'Read'
         readBtnElement.classList.add('read')
@@ -80,27 +80,66 @@ function displayBook(book) {
     
 }
 
-// book registration
+// Open and close the registration panel 
 
 let registerSection = document.querySelector('.register-book-section')
 let openBtn = document.querySelector('#newBookBtn')
 let closeBtn = document.querySelector('#close')
 
 openBtn.addEventListener('click', ()=>{
-        registerSection.style.display = 'flex'
+    registerSection.style.display = 'flex'
 })
 
 closeBtn.addEventListener('click', () => {
     registerSection.style.display = 'none'
 })
 
-let addBookBtn = document.querySelector('#addBookBtn')
+//Take book data in registration panel and add book in myLibrary variable
 
 let title = document.querySelector('#titleInput')
 let author = document.querySelector('#authorInput')
 let pages = document.querySelector('#pagesInput')
 let radioYes = document.querySelector('#yes')
 let radioNo = document.querySelector('#no')
+
+let addBookBtn = document.querySelector('#addBookBtn')
+addBookBtn.onclick = addBook
+
+let counter = 0
+function addBook(e){  
+    
+    if(searchInLibrary(title.value) == undefined) {
+        let isRead = false
+        
+        if(radioYes.checked){
+            isRead = true
+        } else {
+            isRead = false
+        }
+        
+        book = new Book(title.value, author.value, pages.value, isRead)
+        addBookToLibrary(book)
+        
+        displayBook(book)
+        clearInput()
+        
+    } else {
+        if (counter == 0) {
+            counter++
+            let container =  e.target.parentNode
+            let advice = document.createElement('p')
+            advice.innerHTML = 'this book already existed'
+            container.appendChild(advice)
+            
+            setTimeout(() => {
+                e.target.parentNode.lastChild.remove()
+                counter--
+            }, 3000)
+
+        }
+    }
+    
+}
 
 function clearInput() {
     title.value = ''
@@ -110,41 +149,7 @@ function clearInput() {
     radioNo.checked = false
 }
 
-let counter = 0
-function addBook(e){  
-    
-    if(searchInLibrary(title.value) == undefined) {
-        let isRead = false
-
-        if(radioYes.checked){
-            isRead = true
-        } else {
-            isRead = false
-        }
-        
-        book = new Book(title.value, author.value, pages.value, isRead)
-        addBookToLibrary(book)
-    
-        displayBook(book)
-        clearInput()
-
-    } else {
-        if (counter == 0) {
-            counter++
-            let container =  e.target.parentNode
-            let advice = document.createElement('p')
-            advice.innerHTML = 'this book already existed'
-            container.appendChild(advice)
-
-            setTimeout(() => {
-                e.target.parentNode.lastChild.remove()
-                counter--
-            }, 3000)
-
-        }
-    }
-
-}
+// Remove the book in HTML and in myLibrary variable
 
 function searchInLibrary(title) {
     for (let index = 0; index < myLibrary.length; index++) {
@@ -169,4 +174,3 @@ function removeInLibrary(e) {
     }
 }
 
-addBookBtn.onclick = addBook
