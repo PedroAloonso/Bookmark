@@ -24,7 +24,6 @@ function toggleBookRead(e) {
     let bookIndex = searchInLibrary(title)
     let book = myLibrary[bookIndex]
     
-    console.log()
     if (book.isRead == true) {
         book.isRead = false
         e.target.innerHTML = 'Not Read'
@@ -72,7 +71,6 @@ function displayBook(book) {
         readBtnElement.classList.add('not-read')
     }
 
-
     card.appendChild(titleElement)
     card.appendChild(authorElement)
     card.appendChild(pagesElement)
@@ -112,20 +110,40 @@ function clearInput() {
     radioNo.checked = false
 }
 
-function addBook(){
-    let isRead = false
-
-    if(radioYes.checked){
-        isRead = true
-    } else {
-        isRead = false
-    }
+let counter = 0
+function addBook(e){  
     
-    book = new Book(title.value, author.value, pages.value, isRead)
-    addBookToLibrary(book)
+    if(searchInLibrary(title.value) == undefined) {
+        let isRead = false
 
-    displayBook(book)
-    clearInput()
+        if(radioYes.checked){
+            isRead = true
+        } else {
+            isRead = false
+        }
+        
+        book = new Book(title.value, author.value, pages.value, isRead)
+        addBookToLibrary(book)
+    
+        displayBook(book)
+        clearInput()
+
+    } else {
+        if (counter == 0) {
+            counter++
+            let container =  e.target.parentNode
+            let advice = document.createElement('p')
+            advice.innerHTML = 'this book already existed'
+            container.appendChild(advice)
+
+            setTimeout(() => {
+                e.target.parentNode.lastChild.remove()
+                counter--
+            }, 3000)
+
+        }
+    }
+
 }
 
 function searchInLibrary(title) {
@@ -151,9 +169,4 @@ function removeInLibrary(e) {
     }
 }
 
-
-let a = new Book('Game of Thrones', 'LL.jonkin', 500, true)
-
-displayBook(a)
-addBookToLibrary(a)
 addBookBtn.onclick = addBook
