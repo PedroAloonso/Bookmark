@@ -1,10 +1,27 @@
 var myLibrary = []
 
-function Book(title, author, pages, isRead) {
-    this.title = title;
-    this.author = author;
-    this.pages = pages
-    this.isRead = isRead
+class Book {
+    
+    constructor(title, author, pages, isRead) {
+        this._title = title;
+        this._author = author;
+        this._pages = pages
+        this._isRead = isRead
+    }
+
+    get title() {
+        return this._title
+    }
+    get author() {
+        return this._author
+    }
+    get pages() {
+        return this._pages
+    }
+    get isRead() {
+        return this._isRead
+    }
+
 }
 
 function addBookToLibrary(book){
@@ -116,13 +133,28 @@ function addBook(e){
         } else {
             isRead = false
         }
-        
-        book = new Book(title.value, author.value, pages.value, isRead)
-        addBookToLibrary(book)
-        
-        displayBook(book)
-        clearInput()
-        
+
+        if (title.value == '' && author.value == '') {
+            if (counter == 0) {
+                counter++
+                let container =  e.target.parentNode
+                let advice = document.createElement('p')
+                advice.innerHTML = 'Without title and author '
+                container.appendChild(advice)
+                
+                setTimeout(() => {
+                    e.target.parentNode.lastChild.remove()
+                    counter--
+                }, 3000)
+            }
+        } else {
+            book = new Book(title.value, author.value, pages.value, isRead)
+            addBookToLibrary(book)
+            
+            displayBook(book)
+            clearInput()
+        }
+
     } else {
         if (counter == 0) {
             counter++
@@ -135,7 +167,6 @@ function addBook(e){
                 e.target.parentNode.lastChild.remove()
                 counter--
             }, 3000)
-
         }
     }
     
