@@ -29,6 +29,7 @@ main p {
 
 a {
     color: var(--color4);
+    text-decoration: none;
 }
 
 img {
@@ -58,16 +59,22 @@ h3 {
     margin: 0 20px;
     padding: 8px 12px;
     border-radius: 8px;
+    position: relative;
 }
 
 #editBtn {
-    position: relative;
+    position: absolute;
     left: 95%;
-    bottom: 12px;
 }
 
 .book-edit {
     display: none;
+    position: absolute;
+    transition: 1000ms;
+}
+
+#editBtn:hover + .book-edit {
+    display: block;
 }
 
 .page-counter-container {
