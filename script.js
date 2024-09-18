@@ -1,10 +1,5 @@
 // book = {title:'Titulo do livro', link:'link do livro', page:123}
-let books = [
-    { title: "Titulo do livro", link: "link do livro", page: 123 },
-    { title: "Title of Book 2", link: "link of Book 2", page: 456 },
-    { title: "Title of Book 3", link: "link of Book 3", page: 789 },
-    { title: "Title of Book 4", link: "link of Book 4", page: 1011 },
-];
+let books = JSON.parse(localStorage.getItem("books")) || [];
 
 function renderBooks() {
     let bookList = document.querySelector("main");
@@ -85,6 +80,21 @@ function minus(index) {
     bookPage.textContent = String(Number(pageNum) - 1);
 }
 
+function addBook() {
+    let title = `Titulo do livro`;
+    let link = `Link do livro`;
+    let page = 1;
 
+    let newBook = { title, link, page };
+    books.push(newBook);
+
+    localStorage.setItem("books", JSON.stringify(books));
+    renderBooks();
+}
+
+
+
+
+addBookBtn.onclick = addBook;
 
 window.onload = renderBooks;

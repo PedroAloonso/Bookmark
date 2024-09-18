@@ -4,10 +4,10 @@
 }
 
 :root {
-    --color1: #171415;
-    --color2: #3c3c3c;
-    --color3: #9f9f9f;
-    --color4: #ffffff;
+    --color1: rgb(23, 20, 21);
+    --color2: rgb(60, 60, 60);
+    --color3: rgb(159, 159, 159);
+    --color4: rgb(255, 255, 255);
 }
 
 html,
@@ -50,9 +50,27 @@ h3 {
 }
 
 #addBookBtn {
-    width: 100px;
+    width: 200px;
+
     margin: 20px 0;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    background-color: var(--color3);
+    font-size: 20px;
+    font-weight: 500;
 }
+
+#addBookBtn:hover {
+    background-color: rgb(149, 149, 149);
+}
+
+#addBookBtn:active {
+    background-color: rgb(139, 139, 139);
+}
+
+
+
 
 main {
     display: flex;
