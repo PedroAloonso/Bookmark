@@ -6,27 +6,19 @@ let books = [
     { title: "Title of Book 4", link: "link of Book 4", page: 1011 },
 ];
 
-// let editBtn = document.querySelectorAll(".editBtn");
-// editBtn.addEventListener("click", (e) => {
-//     console.log(e.target);
-//     console.log(e.target.parentElement.parentElement);
-// });
-
 function renderBooks() {
     let bookList = document.querySelector("main");
     bookList.innerHTML = "";
-    books.forEach((book, index) => { // Criar um container para botar o editIcon e o input do link
+    books.forEach((book, index) => {
+        // Criar um container para botar o editIcon e o input do link
         bookList.innerHTML += `
             <section class="book-card">
-                    <input type="hidden" id="bookId" value="${index++}" />
-
-                    
                     <div class="book-title"> 
                         <img
                             src="./img/edit-icon.png"
                             alt="Editar"
                             class="editBtn"
-                            onclick="toggleEdit()"
+                            onclick="toggleEdit(${index})"
                         />
 
                         <h2 class="title">
@@ -41,29 +33,58 @@ function renderBooks() {
                     <div class="page-container">
                         <h3>Página:</h3>
 
-                        <img src="./img/arrow-left-icon.png" alt="Anterior" />
+                        <img src="./img/arrow-left-icon.png" alt="Subtrai 1" onclick="minus(${index})"/>
 
-                        <p class="page">${book.page}</p>
+                        <p class="page" ondblclick="toggleEditPage(this)" >${book.page}</p>
 
-                        <img src="./img/arrow-right-icon.png" alt="Próximo" />
+                        <img src="./img/arrow-right-icon.png" alt="Adiciona 1" onclick="sum(${index})" />
                     </div>
                 </section>
         `;
     });
 }
 
-function toggleEdit() {
-    let bookTitle = document.querySelectorAll(".title");
-    let bookInput = document.querySelectorAll(".book-title input")
-    bookTitle.forEach((title) => {
-        let isEditable = title.getAttribute("contenteditable")
-        isEditable === "true"
-            ? title.setAttribute("contenteditable", "false")
-            : title.setAttribute("contenteditable", "true");
-    });
-    bookInput.forEach((input) => {
-        input.classList.toggle('disable')
-    })
+function toggleEdit(index) {
+    let bookTitle = document.querySelectorAll(".title a")[index];
+    let bookInput = document.querySelectorAll(".book-title input")[index];
+
+    let isEditable = bookTitle.getAttribute("contenteditable");
+    isEditable === "true"
+        ? bookTitle.setAttribute("contenteditable", "false")
+        : bookTitle.setAttribute("contenteditable", "true");
+
+    bookInput.classList.toggle("disable");
 }
 
-window.onload = renderBooks
+function toggleEditPage(page) {
+    let isEditable = page.getAttribute("contenteditable");
+    if (isEditable === "true") {
+        page.setAttribute("contenteditable", "false");
+        page.classList.toggle("editable");
+    } else {
+        page.setAttribute("contenteditable", "true");
+        page.classList.toggle("editable");
+    }
+
+    page.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+            page.setAttribute("contenteditable", "false");
+            page.classList.toggle("editable");
+        }
+    });
+}
+
+function sum(index) {
+    let bookPage = document.querySelectorAll(".page")[index];
+    let pageNum = bookPage.textContent;
+    bookPage.textContent = String(Number(pageNum) + 1);
+}
+function minus(index) {
+    let bookPage = document.querySelectorAll(".page")[index];
+    let pageNum = bookPage.textContent;
+    bookPage.textContent = String(Number(pageNum) - 1);
+}
+
+
+
+window.onload = renderBooks;
