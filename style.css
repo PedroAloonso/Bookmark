@@ -44,7 +44,8 @@ h3 {
 
 .container { 
     display: flex;
-    justify-content: center;
+    align-items: center;
+    flex-direction: column;
     height: 100%;
 }
 
@@ -53,32 +54,85 @@ h3 {
     margin: 20px 0;
 }
 
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+}
+
 .book-card {
     width: 100%;
     background-color: var(--color2);
-    margin: 0 20px;
     padding: 8px 12px;
     border-radius: 8px;
     position: relative;
 }
 
-#editBtn {
+.editBtn {
     position: absolute;
     left: 95%;
 }
 
-.book-edit {
-    display: none;
-    position: absolute;
-    transition: 1000ms;
+.book-title {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
-#editBtn:hover + .book-edit {
-    display: block;
+.title {
+    max-width: 80%;
+    color: var(--color4);
 }
 
-.page-counter-container {
+.title a {
+    display: inline-block;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.book-title input{
+    height: 14px;
+    color: var(--color4);
+    padding: 4px;
+    border-radius: 4px;
+    border: 2px solid var(--color1);
+    background-color: transparent;
+
+    overflow-y: hidden;
+    outline: none;
+}
+
+.page-container {
     display: flex;
     align-items: center;
     gap: 8px;
 }
+
+
+.disable {
+    display: none;
+}
+
+/* .book-link-edit {
+display: none;
+opacity: 0;
+transform: translateX(-100%);
+transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.book-title:hover .book-link-edit {
+display: block;
+opacity: 1;
+transform: translateX(0);
+}
+
+.book-link-edit input {
+width: 100%;
+padding: 4px;
+border-radius: 4px;
+border: 1px solid var(--color3);
+} */
