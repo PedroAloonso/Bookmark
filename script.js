@@ -22,7 +22,7 @@ function renderBooks() {
                             >
                         </h2>
 
-                        <input type="text" placeholder="Link" class="disable"/>
+                        <input type="text" placeholder="Novo Link" class="disable link-editor"/>
                     </div>
 
                     <div class="page-container">
@@ -30,7 +30,7 @@ function renderBooks() {
 
                         <img src="./img/arrow-left-icon.png" alt="Subtrai 1" onclick="minus(${index})"/>
 
-                        <p class="page" ondblclick="toggleEditPage(this)" >${book.page}</p>
+                        <p class="page" ondblclick="toggleEditPageNum(this)" >${book.page}</p>
 
                         <img src="./img/arrow-right-icon.png" alt="Adiciona 1" onclick="sum(${index})" />
                     </div>
@@ -49,22 +49,32 @@ function toggleEdit(index) {
         : bookTitle.setAttribute("contenteditable", "true");
 
     bookInput.classList.toggle("disable");
+    saveChange(index)
 }
 
-function toggleEditPage(page) {
-    let isEditable = page.getAttribute("contenteditable");
+function toggleEditPageNum(pageNum) {
+    let isEditable = pageNum.getAttribute("contenteditable");
     if (isEditable === "true") {
-        page.setAttribute("contenteditable", "false");
-        page.classList.toggle("editable");
+        pageNum.setAttribute("contenteditable", "false");
+        pageNum.classList.toggle("editable");
     } else {
-        page.setAttribute("contenteditable", "true");
-        page.classList.toggle("editable");
+        pageNum.setAttribute("contenteditable", "true");
+        pageNum.classList.toggle("editable");
     }
 
-    page.addEventListener("keydown", (e) => {
+    pageNum.addEventListener("keydown", (e) => {
+        isEditable = e.target.getAttribute("contenteditable");
         if (e.key === "Enter") {
-            page.setAttribute("contenteditable", "false");
-            page.classList.toggle("editable");
+            if (isEditable === "true") {
+                pageNum.setAttribute("contenteditable", "false");
+                pageNum.classList.toggle("editable");
+                let pageElements = document.querySelectorAll(".page");
+                let index = Array.prototype.indexOf.call(
+                    pageElements,
+                    e.target
+                );
+                saveChange(index)
+            }
         }
     });
 }
@@ -73,16 +83,19 @@ function sum(index) {
     let bookPage = document.querySelectorAll(".page")[index];
     let pageNum = bookPage.textContent;
     bookPage.textContent = String(Number(pageNum) + 1);
+    saveChange(index);
 }
+
 function minus(index) {
     let bookPage = document.querySelectorAll(".page")[index];
     let pageNum = bookPage.textContent;
     bookPage.textContent = String(Number(pageNum) - 1);
+    saveChange(index);
 }
 
 function addBook() {
     let title = `Titulo do livro`;
-    let link = `Link do livro`;
+    let link = ``;
     let page = 1;
 
     let newBook = { title, link, page };
@@ -92,8 +105,16 @@ function addBook() {
     renderBooks();
 }
 
+function saveChange(index) {
+    let title = document.querySelectorAll(".title a")[index].textContent;
+    let link =
+        document.querySelectorAll(".link-editor")[index].value ||
+        document.querySelectorAll(".title a")[index].href;
+    let page = document.querySelectorAll(".page")[index].textContent;
 
-
+    books[index] = { title, link, page };
+    localStorage.setItem("books", JSON.stringify(books));
+}
 
 addBookBtn.onclick = addBook;
 
