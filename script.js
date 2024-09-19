@@ -1,7 +1,7 @@
-// book = {title:'Titulo do livro', link:'link do livro', page:123}
 let books = JSON.parse(localStorage.getItem("books")) || [];
 
 function renderBooks() {
+    // Renderiza todos os livros da variavel books e monta o card
     let bookList = document.querySelector("main");
     bookList.innerHTML = "";
     books.forEach((book, index) => {
@@ -40,6 +40,7 @@ function renderBooks() {
 }
 
 function toggleEdit(index) {
+    // liga e desliga a capacidade de editar o titulo e o link do livro
     let bookTitle = document.querySelectorAll(".title a")[index];
     let bookInput = document.querySelectorAll(".book-title input")[index];
 
@@ -49,10 +50,11 @@ function toggleEdit(index) {
         : bookTitle.setAttribute("contenteditable", "true");
 
     bookInput.classList.toggle("disable");
-    saveChange(index)
+    saveChange(index);
 }
 
 function toggleEditPageNum(pageNum) {
+    // liga e desliga a capacidade de editar o numero de paginas dando douple click e depois salva
     let isEditable = pageNum.getAttribute("contenteditable");
     if (isEditable === "true") {
         pageNum.setAttribute("contenteditable", "false");
@@ -73,10 +75,11 @@ function toggleEditPageNum(pageNum) {
                     pageElements,
                     e.target
                 );
-                saveChange(index)
+                saveChange(index);
             }
         }
     });
+    saveChange(index);
 }
 
 function sum(index) {

@@ -146,7 +146,7 @@ main {
     display: none;
 }
 
-@media (min-width: 700px) and (max-width: 800px){
+@media (min-width: 700px) and (max-width: 800px) {
     .editBtn {
         left: 92%;
     }
