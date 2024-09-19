@@ -85,14 +85,53 @@ main {
     padding: 8px 12px;
     border-radius: 8px;
     position: relative;
+    pointer-events: all
 }
 
 .editBtn {
+    display: none;
     position: absolute;
+    cursor: pointer;
     left: 95%;
+
+}
+
+.book-card:hover .editBtn {
+    display: block;
+
+}
+
+.deleteBtn {
+    width: 24px;
+    display: none;
+    position: absolute;
+    right: -5%;
+    top: 50%;
+    bottom: auto;
+    transform: translateY(-50%);
+    cursor: pointer;
+    z-index: 1;
+}
+
+.book-card:hover .deleteBtn {
+    display: block;
+    cursor: pointer;
+}
+
+.book-card::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: -5%;
+    width: 5%;
+    height: 100%;
+    /* background-image: linear-gradient(135deg, #ffc2c259 25%, #ff000033 25%, #ff000059 50%, #ffc2c259 50%, #ffc2c259 75%, #ff000059 75%, #ff000059 100%); */
+    background-size: 25px 25px;
+    
 }
 
 .book-title {
+    position: relative;
     display: flex;
     align-items: center;
     flex-wrap: wrap;

@@ -24,7 +24,12 @@ function renderBooks() {
 
                         <input type="text" placeholder="Novo Link" class="disable link-editor"/>
                     </div>
-
+                    <img
+                        src="./img/delete-icon.png"
+                        alt="Excluir"
+                        class="deleteBtn"
+                        onclick="deleteBook(${index})"
+                    />
                     <div class="page-container">
                         <h3>Página:</h3>
 
@@ -34,7 +39,7 @@ function renderBooks() {
 
                         <img src="./img/arrow-right-icon.png" alt="Adiciona 1" onclick="sum(${index})" />
                     </div>
-                </section>
+            </section>
         `;
     });
 }
@@ -118,6 +123,13 @@ function saveChange(index) {
     books[index] = { title, link, page };
     localStorage.setItem("books", JSON.stringify(books));
 }
+
+function deleteBook(index) {
+    books.splice(index, 1);
+    localStorage.setItem("books", JSON.stringify(books));
+    renderBooks();
+}
+
 
 addBookBtn.onclick = addBook;
 
