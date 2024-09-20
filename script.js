@@ -1,29 +1,27 @@
 let books = JSON.parse(localStorage.getItem("books")) || [];
 
+// Renderiza todos os livros da variavel books e monta o card
 function renderBooks() {
-    // Renderiza todos os livros da variavel books e monta o card
     let bookList = document.querySelector("main");
     bookList.innerHTML = "";
     books.forEach((book, index) => {
-        // Criar um container para botar o editIcon e o input do link
+        // TODO: Criar um container para botar o editIcon e o input do link
         bookList.innerHTML += `
             <section class="book-card">
                     <div class="book-title"> 
-                        <img
-                            src="./img/edit-icon.png"
-                            alt="Editar"
-                            class="editBtn"
-                            onclick="toggleEdit(${index})"
-                        />
-
-                        <h2 class="title">
-                            <a href="${book.link}"
-                                >${book.title}</a
-                            >
-                        </h2>
-
-                        <input type="text" placeholder="Novo Link" class="disable link-editor"/>
+                    
+                    <h2 class="title">
+                        <a href="${book.link}">${book.title}</a>
+                    </h2>
+                    
+                    <input type="text" placeholder="Novo Link" class="disable link-editor"/>
                     </div>
+                    <img
+                        src="./img/edit-icon.png"
+                        alt="Editar"
+                        class="editBtn"
+                        onclick="toggleEdit(${index})"
+                    />
                     <img
                         src="./img/delete-icon.png"
                         alt="Excluir"
@@ -44,22 +42,27 @@ function renderBooks() {
     });
 }
 
+// Liga e desliga a capacidade de editar o titulo e o link do livro
 function toggleEdit(index) {
-    // liga e desliga a capacidade de editar o titulo e o link do livro
     let bookTitle = document.querySelectorAll(".title a")[index];
     let bookInput = document.querySelectorAll(".book-title input")[index];
 
     let isEditable = bookTitle.getAttribute("contenteditable");
-    isEditable === "true"
-        ? bookTitle.setAttribute("contenteditable", "false")
-        : bookTitle.setAttribute("contenteditable", "true");
+
+    if (isEditable === "true") {
+        bookTitle.setAttribute("contenteditable", "false");
+        bookTitle.classList.toggle("editable");
+    } else {
+        bookTitle.setAttribute("contenteditable", "true");
+        bookTitle.classList.toggle("editable");
+    }
 
     bookInput.classList.toggle("disable");
-    saveChange(index);
+    save(index);
 }
 
+// Liga e desliga a capacidade de editar o numero de paginas dando douple click e depois salva
 function toggleEditPageNum(pageNum) {
-    // liga e desliga a capacidade de editar o numero de paginas dando douple click e depois salva
     let isEditable = pageNum.getAttribute("contenteditable");
     if (isEditable === "true") {
         pageNum.setAttribute("contenteditable", "false");
@@ -80,27 +83,30 @@ function toggleEditPageNum(pageNum) {
                     pageElements,
                     e.target
                 );
-                saveChange(index);
+                save(index);
             }
         }
     });
-    saveChange(index);
+    save(index);
 }
 
+// Soma 1 no número de páginas
 function sum(index) {
     let bookPage = document.querySelectorAll(".page")[index];
     let pageNum = bookPage.textContent;
     bookPage.textContent = String(Number(pageNum) + 1);
-    saveChange(index);
+    save(index);
 }
 
+// Subtrai 1 no número de páginas
 function minus(index) {
     let bookPage = document.querySelectorAll(".page")[index];
     let pageNum = bookPage.textContent;
     bookPage.textContent = String(Number(pageNum) - 1);
-    saveChange(index);
+    save(index);
 }
 
+// Cria um livro
 function addBook() {
     let title = `Titulo do livro`;
     let link = ``;
@@ -113,7 +119,8 @@ function addBook() {
     renderBooks();
 }
 
-function saveChange(index) {
+// Salva tudo
+function save(index) {
     let title = document.querySelectorAll(".title a")[index].textContent;
     let link =
         document.querySelectorAll(".link-editor")[index].value ||
@@ -124,12 +131,12 @@ function saveChange(index) {
     localStorage.setItem("books", JSON.stringify(books));
 }
 
+// Deleta um livro
 function deleteBook(index) {
     books.splice(index, 1);
     localStorage.setItem("books", JSON.stringify(books));
     renderBooks();
 }
-
 
 addBookBtn.onclick = addBook;
 
