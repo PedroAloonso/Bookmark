@@ -7,4 +7,4 @@ Bookmark created with HTML, CSS, and JS.
 Stores bookmarks locally with the link, title, and page number of the book
 
 
-[Live Demo](https://pedroaloonso.github.io/Library/)
+[Live Demo](https://pedroaloonso.github.io/Bookmark/)
