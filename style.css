@@ -153,7 +153,7 @@ h3 {
     text-decoration-color: var(--color5);
     text-decoration-thickness: 2px;
 }
-
+/*TODO: Resolver o problema de nao ta expandindo quando escreve no IOS */
 
 .book-title input {
     height: 14px;

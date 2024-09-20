@@ -67,6 +67,16 @@ function toggleEdit(index) {
             }
         }
     });
+    bookTitle.addEventListener("Close", (e) => {
+        isEditable = e.target.getAttribute("contenteditable");
+        if (e.key === "Enter") {
+            if (isEditable === "true") {
+                bookTitle.setAttribute("contenteditable", "false");
+                bookTitle.classList.toggle("editable");
+                save(index);
+            }
+        }
+    });
 
     bookInput.classList.toggle("disable");
     save(index);
@@ -98,8 +108,25 @@ function toggleEditPageNum(pageNum) {
             }
         }
     });
+    pageNum.addEventListener("keydown", (e) => {
+        isEditable = e.target.getAttribute("contenteditable");
+        if (e.key === "Close") {
+            if (isEditable === "true") {
+                pageNum.setAttribute("contenteditable", "false");
+                pageNum.classList.toggle("editable");
+                let pageElements = document.querySelectorAll(".page");
+                let index = Array.prototype.indexOf.call(
+                    pageElements,
+                    e.target
+                );
+                save(index);
+            }
+        }
+    });
     save(index);
 }
+
+//TODO criar uma função para para botar nos addEventListener
 
 // Soma 1 no número de páginas
 function sum(index) {
