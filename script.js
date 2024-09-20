@@ -57,6 +57,17 @@ function toggleEdit(index) {
         bookTitle.classList.toggle("editable");
     }
 
+    bookTitle.addEventListener("keydown", (e) => {
+        isEditable = e.target.getAttribute("contenteditable");
+        if (e.key === "Enter") {
+            if (isEditable === "true") {
+                bookTitle.setAttribute("contenteditable", "false");
+                bookTitle.classList.toggle("editable");
+                save(index);
+            }
+        }
+    });
+
     bookInput.classList.toggle("disable");
     save(index);
 }
