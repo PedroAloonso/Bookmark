@@ -83,6 +83,29 @@ h3 {
     pointer-events: all
 }
 
+
+.book-card:hover .editBtn {
+    cursor: pointer;
+    opacity: 1;
+}
+
+.book-card:hover .deleteBtn {
+    display: block;
+    cursor: pointer;
+    opacity: 1;
+}
+
+.book-card::after {
+    width: 5%;
+    height: 100%;
+    content: "";
+    position: absolute;
+    top: 0;
+    right: -5%;
+    /* background-image: linear-gradient(135deg, #ffc2c259 25%, #ff000033 25%, #ff000059 50%, #ffc2c259 50%, #ffc2c259 75%, #ff000059 75%, #ff000059 100%); */
+    background-size: 25px 25px;
+}
+
 .editBtn {
     width: 20px;
     position: absolute;
@@ -90,11 +113,6 @@ h3 {
     left: 95%;
     transition: opacity 500ms ease;
     opacity: 0;
-}
-
-.book-card:hover .editBtn {
-    cursor: pointer;
-    opacity: 1;
 }
 
 .deleteBtn {
@@ -110,52 +128,16 @@ h3 {
     transition: opacity 500ms ease;
 }
 
-.book-card:hover .deleteBtn {
-    display: block;
-    cursor: pointer;
-    opacity: 1;
-}
-
-.book-card::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    right: -5%;
-    width: 5%;
-    height: 100%;
-    /* background-image: linear-gradient(135deg, #ffc2c259 25%, #ff000033 25%, #ff000059 50%, #ffc2c259 50%, #ffc2c259 75%, #ff000059 75%, #ff000059 100%); */
-    background-size: 25px 25px;
-    
-}
 
 .book-title {
     position: relative;
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 4px;
 }
 
-.title {
-    max-width: 50%;
-    height: 28px;
-    color: var(--color4);
-}
-
-.title a {
-    display: inline-block;
-    width: 100%;
-    height: 28px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-
-    text-decoration-color: var(--color5);
-    text-decoration-thickness: 2px;
-}
-/*TODO: Resolver o problema de nao ta expandindo quando escreve no IOS */
-
-.book-title input {
+.book-title > input {
     height: 14px;
     color: var(--color4);
     padding: 4px;
@@ -166,6 +148,37 @@ h3 {
     overflow-y: hidden;
     outline: none;
 }
+
+.title {
+    display: flex;
+    max-width: 90%;
+    height: 28px;
+    color: var(--color4);
+}
+
+
+.title a {
+    width: 100%;
+    height: 28px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+    text-decoration-color: var(--color5);
+    text-decoration-thickness: 2px;
+}
+
+.title-input {
+    font-size: 20px;
+    padding: 2px;
+    margin: 0 12px 0 0;
+    background-color: transparent;
+    color: var(--color4);
+
+    overflow-y: hidden;
+    outline: none;
+}
+
 
 .page-container {
     display: flex;

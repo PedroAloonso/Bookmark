@@ -8,82 +8,85 @@ function renderBooks() {
         // TODO: Criar um container para botar o editIcon e o input do link
         bookList.innerHTML += `
             <section class="book-card">
-                    <div class="book-title"> 
+                <div class="book-title"> 
                     
                     <h2 class="title">
                         <a href="${book.link}">${book.title}</a>
+                        <input type="text" value="${book.title}" class="disable editable title-input"/>
                     </h2>
                     
-                    <input type="text" placeholder="Novo Link" class="disable link-editor"/>
-                    </div>
-                    <img
-                        src="./img/edit-icon.png"
-                        alt="Editar"
-                        class="editBtn"
-                        onclick="toggleEdit(${index})"
-                    />
-                    <img
-                        src="./img/delete-icon.png"
-                        alt="Excluir"
-                        class="deleteBtn"
-                        onclick="deleteBook(${index})"
-                    />
-                    <div class="page-container">
-                        <h3>Página:</h3>
+                    <input type="text" placeholder="Novo Link" class="disable link-input"/>
+                    
+                </div>
 
-                        <img src="./img/arrow-left-icon.png" alt="Subtrai 1" onclick="minus(${index})"/>
+                <img
+                    src="./img/edit-icon.png"
+                    alt="Editar"
+                    class="editBtn"
+                    onclick="toggleEditTitle(${index})"
+                />
+                <img
+                    src="./img/delete-icon.png"
+                    alt="Excluir"
+                    class="deleteBtn"
+                    onclick="deleteBook(${index})"
+                />
 
-                        <p class="page" ondblclick="toggleEditPageNum(this)" >${book.page}</p>
+                <div class="page-container">
+                    <h3>Página:</h3>
 
-                        <img src="./img/arrow-right-icon.png" alt="Adiciona 1" onclick="sum(${index})" />
-                    </div>
+                    <img src="./img/arrow-left-icon.png" alt="Subtrai 1" onclick="minus(${index})"/>
+                    <p class="page" ondblclick="toggleEditPageNum(this)" >${book.page}</p>
+
+                    <img src="./img/arrow-right-icon.png" alt="Adiciona 1" onclick="sum(${index})" />
+                </div>
             </section>
         `;
     });
 }
 
 // Liga e desliga a capacidade de editar o titulo e o link do livro
-function toggleEdit(index) {
+function toggleEditTitle(index) {
     let bookTitle = document.querySelectorAll(".title a")[index];
-    let bookInput = document.querySelectorAll(".book-title input")[index];
+    let bookTitleInput = document.querySelectorAll(".title input")[index];
+    let bookLinkInput = document.querySelectorAll(".book-title > input")[index];
 
-    let isEditable = bookTitle.getAttribute("contenteditable");
-
-    if (isEditable === "true") {
-        bookTitle.setAttribute("contenteditable", "false");
-        bookTitle.classList.toggle("editable");
+    if (bookTitle.classList.contains("disable")) {
+        bookTitle.classList.toggle("disable");
+        bookTitleInput.classList.toggle("disable");
+        bookLinkInput.classList.toggle("disable");
+        save(index);
+        renderBooks();
     } else {
-        bookTitle.setAttribute("contenteditable", "true");
-        bookTitle.classList.toggle("editable");
+        bookTitle.classList.toggle("disable");
+        bookTitleInput.classList.toggle("disable");
+        bookLinkInput.classList.toggle("disable");
     }
 
-    bookTitle.addEventListener("keydown", (e) => {
-        isEditable = e.target.getAttribute("contenteditable");
-        if (e.key === "Enter") {
-            if (isEditable === "true") {
-                bookTitle.setAttribute("contenteditable", "false");
-                bookTitle.classList.toggle("editable");
-                save(index);
-            }
-        }
-    });
-    bookTitle.addEventListener("Close", (e) => {
-        isEditable = e.target.getAttribute("contenteditable");
-        if (e.key === "Enter") {
-            if (isEditable === "true") {
-                bookTitle.setAttribute("contenteditable", "false");
-                bookTitle.classList.toggle("editable");
-                save(index);
-            }
-        }
-    });
+    bookTitleInput.addEventListener("keydown", (e) =>
+        closeThisTitleEditInKeydown(e, "Enter", index)
+    );
+    bookTitleInput.addEventListener("keydown", (e) =>
+        closeThisTitleEditInKeydown(e, "Close", index)
+    );
+}
 
-    bookInput.classList.toggle("disable");
-    save(index);
+function closeThisTitleEditInKeydown(e, key, index) {
+    let element = e.target;
+    let isEditable = !element.classList.contains("disable");
+    if (e.key === key) {
+        if (isEditable) {
+            toggleEditTitle(index);
+            renderBooks();
+        }
+    }
 }
 
 // Liga e desliga a capacidade de editar o numero de paginas dando douple click e depois salva
 function toggleEditPageNum(pageNum) {
+    let pageElements = document.querySelectorAll(".page");
+    let index = Array.prototype.indexOf.call(pageElements, pageNum);
+
     let isEditable = pageNum.getAttribute("contenteditable");
     if (isEditable === "true") {
         pageNum.setAttribute("contenteditable", "false");
@@ -94,39 +97,27 @@ function toggleEditPageNum(pageNum) {
     }
 
     pageNum.addEventListener("keydown", (e) => {
-        isEditable = e.target.getAttribute("contenteditable");
-        if (e.key === "Enter") {
-            if (isEditable === "true") {
-                pageNum.setAttribute("contenteditable", "false");
-                pageNum.classList.toggle("editable");
-                let pageElements = document.querySelectorAll(".page");
-                let index = Array.prototype.indexOf.call(
-                    pageElements,
-                    e.target
-                );
-                save(index);
-            }
-        }
+        closeThisPageEditInKeydown(e, "Enter");
     });
     pageNum.addEventListener("keydown", (e) => {
-        isEditable = e.target.getAttribute("contenteditable");
-        if (e.key === "Close") {
-            if (isEditable === "true") {
-                pageNum.setAttribute("contenteditable", "false");
-                pageNum.classList.toggle("editable");
-                let pageElements = document.querySelectorAll(".page");
-                let index = Array.prototype.indexOf.call(
-                    pageElements,
-                    e.target
-                );
-                save(index);
-            }
-        }
+        closeThisPageEditInKeydown(e, "Close");
     });
     save(index);
 }
 
-//TODO criar uma função para para botar nos addEventListener
+function closeThisPageEditInKeydown(e, key) {
+    let isPageEditable = e.target.getAttribute("contenteditable");
+    let page = e.target
+    if (e.key === key) {
+        if (isPageEditable === "true") {
+            page.setAttribute("contenteditable", "false");
+            page.classList.toggle("editable");
+            let pageElements = document.querySelectorAll(".page");
+            let index = Array.prototype.indexOf.call(pageElements, e.target);
+            save(index);
+        }
+    }
+}
 
 // Soma 1 no número de páginas
 function sum(index) {
@@ -159,9 +150,9 @@ function addBook() {
 
 // Salva tudo
 function save(index) {
-    let title = document.querySelectorAll(".title a")[index].textContent;
+    let title = document.querySelectorAll(".title input")[index].value;
     let link =
-        document.querySelectorAll(".link-editor")[index].value ||
+        document.querySelectorAll(".link-input")[index].value ||
         document.querySelectorAll(".title a")[index].href;
     let page = document.querySelectorAll(".page")[index].textContent;
 
