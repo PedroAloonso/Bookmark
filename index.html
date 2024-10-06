@@ -8,8 +8,20 @@
         <title>📖BookMarks</title>
     </head>
     <body>
-        <div class="container">
+        <header>
             <button id="addBookBtn">Adicionar Livro</button>
+            <img src="img/sidebar-icon.png" alt="" class="sidebarBtn" id="openSideBarBtn" />
+        </header>
+
+        <div id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <img src="img/person-icon.png" alt="User photo" id="userPhoto">
+                <h1 id="closeSideBarBtn">&gt;</h1>
+
+            </div>
+        </div>
+
+        <div class="container">
             <main></main>
         </div>
         <script src="./script.js" defer></script>

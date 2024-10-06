@@ -2,6 +2,8 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/fireba
 import {
     getAuth,
     signInAnonymously,
+    GoogleAuthProvider,
+    signInWithPopup,
 } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
 
 import {
@@ -20,17 +22,41 @@ const firebaseConfig = {
     appId: process.env.FIREBASE_APP_ID,
 };
 
+const loginBtn = document.querySelector("#loginBtn");
+
 // Initialize Firebase
 
 const app = initializeApp(firebaseConfig);
 
 // Firebase Authentication
-const auth = getAuth(app);      // entrar anonimamente
-await signInAnonymously(auth);
+const auth = getAuth(app); 
+await signInAnonymously(auth); // entrar anonimamente
+
+const provider = new GoogleAuthProvider();
+
+function signInWithGoogle() {
+    signInWithPopup(auth, provider)
+        .then((result) => {
+            // O usuário está autenticado
+            const user = result.user;
+            console.log(result)
+            console.log("Usuário logado:", user);
+        })
+        .catch((error) => {
+            console.log("Erro ao logar:", error);
+        });
+}
+
+
+
 
 const db = getFirestore(app);
-const querySnapshot = await getDocs(collection(db, "pessoas"));
-querySnapshot.forEach((doc) => {
-    console.log(doc.data().name);
-    console.log(`${JSON.stringify(doc.data())}`);
-});
+// const querySnapshot = await getDocs(collection(db, "pessoas"));
+// querySnapshot.forEach((doc) => {
+//     console.log(doc.data().name);
+//     console.log(`${JSON.stringify(doc.data())}`);
+// });
+
+//loginBtn.addEventListener("click", signInWithGoogle);
+
+//signInWithGoogle()

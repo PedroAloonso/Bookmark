@@ -1,3 +1,5 @@
+
+
 let books = JSON.parse(localStorage.getItem("books")) || [];
 
 // Renderiza todos os livros da variavel books e monta o card
@@ -167,6 +169,26 @@ function deleteBook(index) {
     renderBooks();
 }
 
-addBookBtn.onclick = addBook;
+const openSideBar = document.querySelector("#openSideBarBtn");
+const closeSideBar = document.querySelector("#closeSideBarBtn");
+const sidebar = document.querySelector("#sidebar");
 
+openSideBar.addEventListener("click", () => {
+    sidebar.classList.toggle("open");
+    openSideBar.classList.toggle("disable-button");
+});
+
+closeSideBar.addEventListener("click", () => {
+    sidebar.classList.toggle("open");
+    openSideBar.classList.toggle("disable-button");
+});
+
+// ver como funciona o processo de guardar com coisas com o usuario
+
+
+
+
+addBookBtn.onclick = addBook;
 window.onload = renderBooks;
+
+
