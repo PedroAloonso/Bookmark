@@ -30,10 +30,11 @@ const signOutBtn = document.querySelector("#signOutBtn");
 // Initialize Firebase
 
 const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 // Firebase Authentication
 const auth = getAuth(app); 
-await signInAnonymously(auth); // entrar anonimamente
+//await signInAnonymously(auth); // entrar anonimamente
 
 const provider = new GoogleAuthProvider();
 
@@ -50,6 +51,26 @@ function signInWithGoogle() {
 
             console.log(result)
             console.log("Usuário logado:", user);
+
+             // Save user data to Firestore
+            const userData = {
+                uid: user.uid,
+                displayName: user.displayName,
+                photoURL: user.photoURL,
+                email: user.email,
+                emailVerified: user.emailVerified,
+                creationTime: user.metadata.creationTime,
+                lastSignInTime: user.metadata.lastSignInTime,
+                favoriteBooks: JSON.parse(localStorage.getItem("books")),
+            };
+
+            addDoc(collection(db, "users"), userData)
+            .then(() => {
+                console.log("User data saved successfully");
+            })
+            .catch((error) => {
+                console.error("Error saving user data:", error);
+            });
         })
         .catch((error) => {
             console.log("Erro ao logar:", error);
@@ -68,7 +89,6 @@ function signOutUser() {
 }
 
 
-const db = getFirestore(app);
 // const querySnapshot = await getDocs(collection(db, "pessoas"));
 // querySnapshot.forEach((doc) => {
 //     console.log(doc.data().name);
