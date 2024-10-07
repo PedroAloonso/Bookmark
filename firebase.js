@@ -4,6 +4,7 @@ import {
     signInAnonymously,
     GoogleAuthProvider,
     signInWithPopup,
+    signOut,
 } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
 
 import {
@@ -22,7 +23,9 @@ const firebaseConfig = {
     appId: process.env.FIREBASE_APP_ID,
 };
 
-const loginBtn = document.querySelector("#loginBtn");
+const loginBtn = document.querySelector("#userPhoto");
+const userPhoto = document.querySelector("#userPhoto");
+const signOutBtn = document.querySelector("#signOutBtn");
 
 // Initialize Firebase
 
@@ -36,9 +39,15 @@ const provider = new GoogleAuthProvider();
 
 function signInWithGoogle() {
     signInWithPopup(auth, provider)
-        .then((result) => {
-            // O usuário está autenticado
+    .then((result) => {
             const user = result.user;
+            const photoURL = user.photoURL;
+            signOutBtn.classList.toggle("disable")
+
+            if (photoURL) {
+                userPhoto.src = photoURL;
+            }
+
             console.log(result)
             console.log("Usuário logado:", user);
         })
@@ -47,7 +56,16 @@ function signInWithGoogle() {
         });
 }
 
-
+function signOutUser() {
+    signOut(auth)
+        .then(() => {
+            userPhoto.src = "./img/person-icon.png"
+            console.log("User signed out successfully");
+        })
+        .catch((error) => {
+            console.error("Error signing out:", error);
+        });
+}
 
 
 const db = getFirestore(app);
@@ -57,6 +75,5 @@ const db = getFirestore(app);
 //     console.log(`${JSON.stringify(doc.data())}`);
 // });
 
-//loginBtn.addEventListener("click", signInWithGoogle);
-
-//signInWithGoogle()
+loginBtn.addEventListener("click", signInWithGoogle);
+signOutBtn.addEventListener("click", signOutUser)
