@@ -26,6 +26,7 @@ const firebaseConfig = {
 const loginBtn = document.querySelector("#userPhoto");
 const userPhoto = document.querySelector("#userPhoto");
 const signOutBtn = document.querySelector("#signOutBtn");
+const userUID = null 
 
 // Initialize Firebase
 
@@ -97,3 +98,4 @@ function signOutUser() {
 
 loginBtn.addEventListener("click", signInWithGoogle);
 signOutBtn.addEventListener("click", signOutUser)
+

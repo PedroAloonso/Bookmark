@@ -1,5 +1,3 @@
-
-
 let books = JSON.parse(localStorage.getItem("books")) || [];
 
 // Renderiza todos os livros da variavel books e monta o card
@@ -25,22 +23,20 @@ function renderBooks() {
                     src="./img/edit-icon.png"
                     alt="Editar"
                     class="editBtn"
-                    onclick="toggleEditTitle(${index})"
                 />
                 <img
                     src="./img/delete-icon.png"
                     alt="Excluir"
                     class="deleteBtn"
-                    onclick="deleteBook(${index})"
                 />
 
                 <div class="page-container">
                     <h3>Página:</h3>
 
-                    <img src="./img/arrow-left-icon.png" alt="Subtrai 1" onclick="minus(${index})"/>
+                    <img src="./img/arrow-left-icon.png" alt="Seta para esquerda" class="minusBtn" onclick="minus(${index})"/>
                     <p class="page" ondblclick="toggleEditPageNum(this)" >${book.page}</p>
 
-                    <img src="./img/arrow-right-icon.png" alt="Adiciona 1" onclick="sum(${index})" />
+                    <img src="./img/arrow-right-icon.png" alt="Seta para direita" class="sumBtn" onclick="sum(${index})" />
                 </div>
             </section>
         `;
@@ -58,7 +54,7 @@ function toggleEditTitle(index) {
         bookTitleInput.classList.toggle("disable");
         bookLinkInput.classList.toggle("disable");
         save(index);
-        renderBooks();
+        main();
     } else {
         bookTitle.classList.toggle("disable");
         bookTitleInput.classList.toggle("disable");
@@ -79,7 +75,7 @@ function closeThisTitleEditInKeydown(e, key, index) {
     if (e.key === key) {
         if (isEditable) {
             toggleEditTitle(index);
-            renderBooks();
+            main();
         }
     }
 }
@@ -109,7 +105,7 @@ function toggleEditPageNum(pageNum) {
 
 function closeThisPageEditInKeydown(e, key) {
     let isPageEditable = e.target.getAttribute("contenteditable");
-    let page = e.target
+    let page = e.target;
     if (e.key === key) {
         if (isPageEditable === "true") {
             page.setAttribute("contenteditable", "false");
@@ -166,7 +162,7 @@ function save(index) {
 function deleteBook(index) {
     books.splice(index, 1);
     localStorage.setItem("books", JSON.stringify(books));
-    renderBooks();
+    main();
 }
 
 const openSideBar = document.querySelector("#openSideBarBtn");
@@ -183,12 +179,30 @@ closeSideBar.addEventListener("click", () => {
     openSideBar.classList.toggle("disable-button");
 });
 
-// ver como funciona o processo de guardar com coisas com o usuario
+function main() {
+    renderBooks();
+    const editTitleBtns = document.querySelectorAll(".editBtn");
+    const deleteBtns = document.querySelectorAll(".deleteBtn");
+    const sumBtns = document.querySelectorAll(".sumBtn");
+    const minusBtns = document.querySelectorAll(".minusBtn");
 
 
+    editTitleBtns.forEach((btn, index) => {
+        btn.addEventListener("click", () => toggleEditTitle(index));
+    });
 
+    deleteBtns.forEach((btn, index) => {
+        btn.addEventListener("click", () => deleteBook(index));
+    });
+
+    sumBtns.forEach((btn, index) => {
+        btn.addEventListener("click", () => sum(index));
+    });
+
+    minusBtns.forEach((btn, index) => {
+        btn.addEventListener("click", () => minus(index));
+    });
+}
 
 addBookBtn.onclick = addBook;
-window.onload = renderBooks;
-
-
+window.onload = main;
