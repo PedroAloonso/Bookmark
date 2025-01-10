@@ -25,13 +25,4 @@ const signOutGoogle = async () => {
     }  
 }
 
-// Função para pegar o usuário logado no momento
-const getUser = () => {
-    return new Promise((resolve, reject) => {
-        onAuthStateChanged(auth, (user) => {
-            resolve(user);
-        });
-    });
-}
-
-export { signInWithGoogle, signOutGoogle, getUser };
+export { signInWithGoogle, signOutGoogle, auth };
