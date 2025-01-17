@@ -14,5 +14,5 @@ function main() {
 
 window.onload = main;
 
-// console.log(fetchPessoa("VHVwo1wGVATWy6oAPNdzDt57bix2"))
+
 export default books
