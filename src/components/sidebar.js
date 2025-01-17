@@ -1,5 +1,5 @@
-import { signInWithGoogle, signOutGoogle } from "../firebase/auth.js";
-import { getUser, fetchPessoa } from "../firebase/data.js";
+import { signInWithGoogle, signOutGoogle, getUser, auth } from "../firebase/auth.js";
+import { fetchPessoa } from "../firebase/data.js";
 import { renderBooks } from "./book.js";
 
 
@@ -24,14 +24,22 @@ export default function sidebarActions() {
     
     // Ações para fazer login e logout
     signIn.addEventListener("click", async () => {
-        await signInWithGoogle();
-        getUser().then(async (user) => {
-            signIn.setAttribute("src", user.photoURL);
-            signOut.classList.toggle("disable");
-            const books = await fetchPessoa(user.uid);
-            console.log(books);
-            renderBooks(books.favoriteBooks);
-        });
+        try {
+            const signInUser = await signInWithGoogle();
+            console.log(signInUser.user.uid);
+            console.log(await fetchPessoa(signInUser.user.uid))
+        } catch (error) { }
+
+        // try {
+        //     const user = await getUser();
+        //     signIn.setAttribute("src", user.photoURL);
+        //     signOut.classList.toggle("disable");
+        //     const books = user.favoriteBooks;
+        //     renderBooks(books.favoriteBooks);
+        // } catch (error) {
+            
+        // }
+
     });
 
     signOut.addEventListener("click", () => {
