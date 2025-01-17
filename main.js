@@ -1,6 +1,6 @@
 import sidebarActions from "./src/components/sidebar.js";
 import {addBooksActions, renderBooks, addBook} from "./src/components/book.js";
-// import {fetchPessoa} from "./src/firebase/data.js";
+import {fetchPessoa} from "./src/firebase/data.js";
 
 const books = JSON.parse(localStorage.getItem("books")) || [];
 
@@ -14,5 +14,5 @@ function main() {
 
 window.onload = main;
 
-// fetchPessoa('kQwCbJBc0JMu3v8fdY1cqMkhVMo2')
+// console.log(fetchPessoa("VHVwo1wGVATWy6oAPNdzDt57bix2"))
 export default books
