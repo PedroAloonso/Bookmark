@@ -1,3 +1,6 @@
+import { getUser } from "../firebase/auth";
+
+
 const books = JSON.parse(localStorage.getItem("books")) || [];
 
 function Book(link, title, page) {
@@ -48,17 +51,28 @@ function save(index) {
 
 
 // Cria um livro
-function addBook() {
+async function addBook() {
     let title = `Titulo do livro`;
     let link = ``;
     let page = 1;
 
     let newBook = { title, link, page };
-    books.push(newBook);
 
-    localStorage.setItem("books", JSON.stringify(books));
-    renderBooks();
-    addBooksActions();
+
+    try {
+        const user = await getUser()
+        let newFavoritesBooks = [...user.favoriteBooks, newBook];
+        console.log(user);
+
+    } catch (error) {
+        books.push(newBook);
+
+        localStorage.setItem("books", JSON.stringify(books));
+
+        renderBooks();
+        addBooksActions();
+    }
+
 }
 
 
@@ -196,7 +210,6 @@ function minus(index) {
 
 // Renderiza todos os livros da variavel books e monta o card
 function renderBooks(books = JSON.parse(localStorage.getItem("books"))) {
-    console.log(books)
     let bookList = document.querySelector("main");
     bookList.innerHTML = "";
     books.forEach((book, index) => {
@@ -204,4 +217,4 @@ function renderBooks(books = JSON.parse(localStorage.getItem("books"))) {
     });
 }
 
-export { Book, addBooksActions, renderBooks, addBook}
+export { Book, addBooksActions, renderBooks, addBook }
