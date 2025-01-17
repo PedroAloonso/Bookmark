@@ -1,12 +1,14 @@
-import { getFirestore, collection, getDocs, getDoc, setDoc, doc } from "firebase/firestore";
+import { getFirestore, collection, getDocs, getDoc, setDoc, doc, updateDoc } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./auth";
 import app from './config'; // Supondo que você já tenha a configuração do Firebase no arquivo config.js
 
 // Obter a instância do Firestore
 const db = getFirestore(app);
+var bookData = [];
 
-// TODO: Remover essas funções de fetch no projeto final
+
+// TODO: Remover função de fetch de Pessoas do projeto final
 
 
 // Para buscar os documentos da coleção 'pessoas'
@@ -27,7 +29,7 @@ const fetchPessoas = async () => {
     }
 };
 
-// Para buscar um documento específico
+// Para buscar os dados de um usuario em especifico específico
 const fetchPessoa = async (uid) => {
     try {
         const docRef = doc(db, "users", uid);
@@ -37,6 +39,7 @@ const fetchPessoa = async (uid) => {
             return docSnap.data();
         } else {
             console.log("Nenhum dado encontrado para o usuário.");
+            return null
         }
     } catch (error) {
         console.error("Erro ao buscar dados do Firestore:", error);
@@ -44,22 +47,8 @@ const fetchPessoa = async (uid) => {
 }
 
 
-
-// Função para pegar o usuário logado no momento
-const getUser = () => {
-    return new Promise((resolve, reject) => {
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                resolve(user);
-            } else {
-                reject(1);
-            }
-        });
-    });
-}
-
-// Para adicionar um documento
-const addInDatabase = async (uid, data) => {
+// Para adicionar um usuario no banco de dados
+const addUserInDatabase = async (uid, data) => {
     try {
         await setDoc(doc(db, "users", uid), data);
         console.log("Usuário registrado com sucesso no Firestore.");
@@ -79,14 +68,7 @@ const updateInDatabase = async (uid, data) => {
 }
 
 
-const mergeData = async (localData, dbData) => {
-    const auxBooks = await dbData.then((data) => { return data.favoriteBooks });
-    
-}
-
-//mergeData(JSON.parse(localStorage.getItem("books")), fetchPessoa('kQwCbJBc0JMu3v8fdY1cqMkhVMo2'))
- 
 
 
 // Chama a função para buscar os dados
-export { fetchPessoa, getUser };
+export { fetchPessoa, updateInDatabase, addUserInDatabase };
