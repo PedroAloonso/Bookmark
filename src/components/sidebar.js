@@ -1,5 +1,5 @@
 import { signInWithGoogle, signOutGoogle, getUser, auth } from "../firebase/auth.js";
-import { fetchPessoa } from "../firebase/data.js";
+import { fetchPessoa, addUserInDatabase } from "../firebase/data.js";
 import { renderBooks } from "./book.js";
 
 
@@ -21,30 +21,38 @@ export default function sidebarActions() {
         sidebar.classList.toggle("open");
         openSidebar.classList.toggle("disable-button");
     });
-    
+
     // Ações para fazer login e logout
     signIn.addEventListener("click", async () => {
         try {
             const signInUser = await signInWithGoogle();
-            console.log(signInUser.user.uid);
-            console.log(await fetchPessoa(signInUser.user.uid))
-        } catch (error) { }
+            const user = signInUser.user;
+            const userInDB = await fetchPessoa(user.uid);
+            if (!userInDB) {
+                await addUserInDatabase(user.uid, {
+                    displayName: user.displayName,
+                    email: user.email,
+                    creationTime: user.metadata.creationTime,
+                    lastSignIn: user.metadata.lastSignInTime,
+                    favoriteBooks: []
+                });
+                renderBooks([]);
+            } else {
+                renderBooks(userInDB.favoriteBooks);
+                signIn.setAttribute("src", user.photoURL);
+                signOut.classList.toggle("disable");
+            }
 
-        // try {
-        //     const user = await getUser();
-        //     signIn.setAttribute("src", user.photoURL);
-        //     signOut.classList.toggle("disable");
-        //     const books = user.favoriteBooks;
-        //     renderBooks(books.favoriteBooks);
-        // } catch (error) {
-            
-        // }
+        } catch (error) {
+            console.log("Erro ao fazer login:", error);
+        }
+
 
     });
 
     signOut.addEventListener("click", () => {
         signOutGoogle();
-        signIn.setAttribute("src","img/user-icon.png");
+        signIn.setAttribute("src", "img/user-icon.png");
         signOut.classList.toggle("disable")
     });
 }

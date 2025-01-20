@@ -29,7 +29,7 @@ const fetchPessoas = async () => {
     }
 };
 
-// Para buscar os dados de um usuario em especifico específico
+// Para buscar os dados de um usuario em especifico no banco de dados
 const fetchPessoa = async (uid) => {
     try {
         const docRef = doc(db, "users", uid);

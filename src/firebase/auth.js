@@ -2,8 +2,8 @@ import app from './config';
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth';
 
 
-// TODO: Adicionar na função signInWithGoogle uma função para adicionar o usuário no banco de dados caso ele não exista,
-// verificar com a função fetchPessoa, se o usuário ja existir, atualizar os dados do usuário no banco de dados.
+// TODO: Remover função de fetch de Pessoas do projeto final
+// TODO: Fazer a função de remover um livro da lista de favoritos no banco de dados
 
 // Inicializando o Auth
 const auth = getAuth(app);

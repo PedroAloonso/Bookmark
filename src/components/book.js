@@ -1,4 +1,5 @@
 import { getUser } from "../firebase/auth";
+import { fetchPessoa, updateInDatabase } from "../firebase/data";
 
 
 const books = JSON.parse(localStorage.getItem("books")) || [];
@@ -51,24 +52,23 @@ function save(index) {
 
 
 // Cria um livro
-async function addBook() {
+const addBook = async () => {
     let title = `Titulo do livro`;
     let link = ``;
     let page = 1;
 
     let newBook = { title, link, page };
 
-
-    try {
-        const user = await getUser()
-        let newFavoritesBooks = [...user.favoriteBooks, newBook];
-        console.log(user);
-
-    } catch (error) {
+    const user = await getUser();
+    if (user) {
+        const userDB = await fetchPessoa(user.uid);
+        const newFavoritesBooks = [...userDB.favoriteBooks, newBook];
+        await updateInDatabase(user.uid, { favoriteBooks: newFavoritesBooks });
+        const NewUserDB = await fetchPessoa(user.uid);
+        renderBooks(NewUserDB.favoriteBooks);
+    } else {
         books.push(newBook);
-
         localStorage.setItem("books", JSON.stringify(books));
-
         renderBooks();
         addBooksActions();
     }
