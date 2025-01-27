@@ -63,25 +63,33 @@ const addBook = async () => {
     if (user) {
         const userDB = await fetchPessoa(user.uid);
         const newFavoritesBooks = [...userDB.favoriteBooks, newBook];
+        renderBooks(newFavoritesBooks);
         await updateInDatabase(user.uid, { favoriteBooks: newFavoritesBooks });
-        const NewUserDB = await fetchPessoa(user.uid);
-        renderBooks(NewUserDB.favoriteBooks);
+        //const NewUserDB = await fetchPessoa(user.uid);
     } else {
         books.push(newBook);
         localStorage.setItem("books", JSON.stringify(books));
-        renderBooks();
-        addBooksActions();
+        renderBooks();;
     }
 
 }
 
 
 // Deleta um livro
-function deleteBook(index) {
-    books.splice(index, 1);
-    localStorage.setItem("books", JSON.stringify(books));
-    renderBooks();
-    addBooksActions();;
+const deleteBook= async (index) => {
+    const user = await getUser();
+    if (user) {
+        const userDB = await fetchPessoa(user.uid);
+        const newFavoritesBooks = userDB.favoriteBooks.filter((_, i) => i !== index);
+
+        console.log(newFavoritesBooks)
+        renderBooks(newFavoritesBooks);
+        await updateInDatabase(user.uid, { favoriteBooks: newFavoritesBooks });
+    } else {
+        books.splice(index, 1);
+        localStorage.setItem("books", JSON.stringify(books));
+        renderBooks();
+    }
 }
 
 // Adiciona os eventos de click nos botões de editar, deletar, somar e subtrair
@@ -126,7 +134,6 @@ function toggleEditTitle(index) {
         bookLinkInput.classList.toggle("disable");
         save(index);
         renderBooks();
-        addBooksActions();
     } else {
         bookTitle.classList.toggle("disable");
         bookTitleInput.classList.toggle("disable");
@@ -149,7 +156,6 @@ function closeThisTitleEditInKeydown(e, key, index) {
         if (isEditable) {
             toggleEditTitle(index);
             renderBooks();
-            addBooksActions();;
         }
     }
 }
@@ -215,6 +221,7 @@ function renderBooks(books = JSON.parse(localStorage.getItem("books"))) {
     books.forEach((book, index) => {
         bookList.innerHTML += Book(book.link, book.title, book.page);
     });
+    addBooksActions()
 }
 
 export { Book, addBooksActions, renderBooks, addBook }
