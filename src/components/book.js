@@ -1,5 +1,5 @@
 import { getUser } from "../firebase/auth";
-import { fetchPessoa, updateInDatabase } from "../firebase/data";
+import { getUserDataInDB, updateInDatabase } from "../firebase/data";
 
 
 const books = JSON.parse(localStorage.getItem("books")) || [];
@@ -38,18 +38,28 @@ function Book(link, title, page) {
     `
 }
 
-// Salva tudo
-function save(index) {
+// Salva 
+const save = async (index) => {
     let title = document.querySelectorAll(".title input")[index].value;
     let link =
         document.querySelectorAll(".link-input")[index].value ||
         document.querySelectorAll(".title a")[index].href;
     let page = document.querySelectorAll(".page")[index].textContent;
 
-    books[index] = { title, link, page };
-    localStorage.setItem("books", JSON.stringify(books));
-}
+    const user = await getUser();
+    if (user) {
+        const userDB = await getUserDataInDB(user.uid);
+        let newFavoritesBooks = [...userDB.favoriteBooks];
+        newFavoritesBooks[index] = { title, link, page };
+        console.log(newFavoritesBooks)
+        renderBooks(newFavoritesBooks);
+        await updateInDatabase(user.uid, { favoriteBooks: newFavoritesBooks });
+    } else {
+        books[index] = { title, link, page };
+        localStorage.setItem("books", JSON.stringify(books));
+    }
 
+}
 
 // Cria um livro
 const addBook = async () => {
@@ -61,28 +71,25 @@ const addBook = async () => {
 
     const user = await getUser();
     if (user) {
-        const userDB = await fetchPessoa(user.uid);
+        const userDB = await getUserDataInDB(user.uid);
         const newFavoritesBooks = [...userDB.favoriteBooks, newBook];
         renderBooks(newFavoritesBooks);
         await updateInDatabase(user.uid, { favoriteBooks: newFavoritesBooks });
-        //const NewUserDB = await fetchPessoa(user.uid);
     } else {
         books.push(newBook);
         localStorage.setItem("books", JSON.stringify(books));
         renderBooks();;
     }
-
 }
 
 
 // Deleta um livro
-const deleteBook= async (index) => {
+const deleteBook = async (index) => {
     const user = await getUser();
     if (user) {
-        const userDB = await fetchPessoa(user.uid);
+        const userDB = await getUserDataInDB(user.uid);
         const newFavoritesBooks = userDB.favoriteBooks.filter((_, i) => i !== index);
 
-        console.log(newFavoritesBooks)
         renderBooks(newFavoritesBooks);
         await updateInDatabase(user.uid, { favoriteBooks: newFavoritesBooks });
     } else {
@@ -123,7 +130,7 @@ function addBooksActions() {
 }
 
 // Liga e desliga a capacidade de editar o titulo e o link do livro
-function toggleEditTitle(index) {
+const toggleEditTitle = async (index) => {
     let bookTitle = document.querySelectorAll(".title a")[index];
     let bookTitleInput = document.querySelectorAll(".title input")[index];
     let bookLinkInput = document.querySelectorAll(".book-title > input")[index];
@@ -133,7 +140,6 @@ function toggleEditTitle(index) {
         bookTitleInput.classList.toggle("disable");
         bookLinkInput.classList.toggle("disable");
         save(index);
-        renderBooks();
     } else {
         bookTitle.classList.toggle("disable");
         bookTitleInput.classList.toggle("disable");
@@ -141,21 +147,20 @@ function toggleEditTitle(index) {
     }
 
     bookTitleInput.addEventListener("keydown", (e) =>
-        closeThisTitleEditInKeydown(e, "Enter", index)
+        closeTitleEditWithKeydown(e, "Enter", index)
     );
     bookTitleInput.addEventListener("keydown", (e) =>
-        closeThisTitleEditInKeydown(e, "Close", index)
+        closeTitleEditWithKeydown(e, "Close", index)
     );
 }
 
-// Fecha a edição do titulo e do link do livro
-function closeThisTitleEditInKeydown(e, key, index) {
+// Fecha a edição do titulo e do link do livro com a tecla Enter    
+const closeTitleEditWithKeydown = async (e, key, index) => {
     let element = e.target;
     let isEditable = !element.classList.contains("disable");
     if (e.key === key) {
         if (isEditable) {
             toggleEditTitle(index);
-            renderBooks();
         }
     }
 }
@@ -175,16 +180,16 @@ function toggleEditPageNum(pageNum) {
     }
 
     pageNum.addEventListener("keydown", (e) => {
-        closeThisPageEditInKeydown(e, "Enter");
+        closePageEditWithKeydown(e, "Enter");
     });
     pageNum.addEventListener("keydown", (e) => {
-        closeThisPageEditInKeydown(e, "Close");
+        closePageEditWithKeydown(e, "Close");
     });
     save(index);
 }
 
-// Fecha a edição do numero de paginas
-function closeThisPageEditInKeydown(e, key) {
+// Fecha a edição do numero de paginas quando a tecla Enter é pressionada
+function closePageEditWithKeydown(e, key) {
     let isPageEditable = e.target.getAttribute("contenteditable");
     let page = e.target;
     if (e.key === key) {

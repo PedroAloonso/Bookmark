@@ -30,7 +30,7 @@ const fetchPessoas = async () => {
 };
 
 // Para buscar os dados de um usuario em especifico no banco de dados
-const fetchPessoa = async (uid) => {
+const getUserDataInDB = async (uid) => {
     try {
         const docRef = doc(db, "users", uid);
         const docSnap = await getDoc(docRef);
@@ -71,4 +71,4 @@ const updateInDatabase = async (uid, data) => {
 
 
 // Chama a função para buscar os dados
-export { fetchPessoa, updateInDatabase, addUserInDatabase };
+export { getUserDataInDB, updateInDatabase, addUserInDatabase };

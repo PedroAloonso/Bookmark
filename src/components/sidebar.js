@@ -1,9 +1,9 @@
 import { signInWithGoogle, signOutGoogle, getUser, auth } from "../firebase/auth.js";
-import { fetchPessoa, addUserInDatabase } from "../firebase/data.js";
+import { getUserDataInDB, addUserInDatabase } from "../firebase/data.js";
 import { renderBooks } from "./book.js";
 
 
-export default function sidebarActions() {
+export default async function sidebarActions() {
 
     const openSidebar = document.querySelector("#openSideBarBtn");
     const closeSideBar = document.querySelector("#closeSideBarBtn");
@@ -27,7 +27,7 @@ export default function sidebarActions() {
         try {
             const signInUser = await signInWithGoogle();
             const user = signInUser.user;
-            const userInDB = await fetchPessoa(user.uid);
+            const userInDB = await getUserDataInDB(user.uid);
             if (!userInDB) {
                 await addUserInDatabase(user.uid, {
                     displayName: user.displayName,
@@ -55,4 +55,16 @@ export default function sidebarActions() {
         signIn.setAttribute("src", "img/user-icon.png");
         signOut.classList.toggle("disable")
     });
+
+    checkIfUserIsLogged()
+}
+
+const checkIfUserIsLogged = async () => {
+    const user = await getUser();
+    if (user) {
+        const userInDB = await getUserDataInDB(user.uid);
+        renderBooks(userInDB.favoriteBooks);
+        document.querySelector("#userPhoto").setAttribute("src", user.photoURL);
+        document.querySelector("#signOutBtn").classList.toggle("disable");
+    }   
 }
