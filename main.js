@@ -1,5 +1,5 @@
 import sidebarActions from "./src/components/sidebar.js";
-import { addBooksActions, renderBooks, addBook } from "./src/components/book.js";
+import { renderBooks, addBook } from "./src/components/book.js";
 import { getUser } from "./src/firebase/auth.js";
 import { getUserDataInDB } from "./src/firebase/data.js";
 

@@ -1,33 +1,8 @@
 import { getFirestore, collection, getDocs, getDoc, setDoc, doc, updateDoc } from "firebase/firestore";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "./auth";
-import app from './config'; // Supondo que você já tenha a configuração do Firebase no arquivo config.js
+import app from './config';
 
 // Obter a instância do Firestore
 const db = getFirestore(app);
-var bookData = [];
-
-
-// TODO: Remover função de fetch de Pessoas do projeto final
-
-
-// Para buscar os documentos da coleção 'pessoas'
-const fetchPessoas = async () => {
-    try {
-        // Referência à coleção 'users'
-        const pessoasCollection = collection(db, 'users');
-
-        // Recupera os documentos da coleção
-        const querySnapshot = await getDocs(pessoasCollection);
-
-        // Processa os documentos retornados
-        querySnapshot.forEach((doc) => {
-            console.log(doc.id, " => ", doc.data());
-        });
-    } catch (error) {
-        console.error("Erro ao buscar documentos:", error);
-    }
-};
 
 // Para buscar os dados de um usuario em especifico no banco de dados
 const getUserDataInDB = async (uid) => {

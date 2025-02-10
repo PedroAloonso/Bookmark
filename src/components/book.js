@@ -1,7 +1,6 @@
 import { getUser } from "../firebase/auth";
 import { getUserDataInDB, updateInDatabase } from "../firebase/data";
 
-
 const books = JSON.parse(localStorage.getItem("books")) || [];
 
 function Book(link, title, page) {
@@ -81,7 +80,6 @@ const addBook = async () => {
         renderBooks();;
     }
 }
-
 
 // Deleta um livro
 const deleteBook = async (index) => {

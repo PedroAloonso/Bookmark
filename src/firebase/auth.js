@@ -1,10 +1,7 @@
 import app from './config';
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth';
 
-
-// TODO: Remover função de fetch de Pessoas do projeto final
 // TODO: Fazer uma maneira de diminuir a quantidade de requisições ao banco de dados
-// TODO: Refazer a função de atualiza as informações das marcações de livros
 
 // Inicializando o Auth
 const auth = getAuth(app);
