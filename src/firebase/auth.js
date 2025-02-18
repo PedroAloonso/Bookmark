@@ -33,8 +33,6 @@ const getUser = () => {
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 resolve(user);
-            } else {
-                reject(0);
             }
         });
     });

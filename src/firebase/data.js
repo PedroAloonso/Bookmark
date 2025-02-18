@@ -13,7 +13,6 @@ const getUserDataInDB = async (uid) => {
         if (docSnap.exists()) {
             return docSnap.data();
         } else {
-            console.log("Nenhum dado encontrado para o usuário.");
             return null
         }
     } catch (error) {
@@ -26,7 +25,6 @@ const getUserDataInDB = async (uid) => {
 const addUserInDatabase = async (uid, data) => {
     try {
         await setDoc(doc(db, "users", uid), data);
-        console.log("Usuário registrado com sucesso no Firestore.");
     } catch (error) {
         console.error("Erro ao registrar usuário no Firestore:", error);
     }
@@ -36,7 +34,6 @@ const addUserInDatabase = async (uid, data) => {
 const updateInDatabase = async (uid, data) => {
     try {
         await updateDoc(doc(db, "users", uid), data);
-        console.log("Dados do usuário atualizados com sucesso no Firestore.");
     } catch (error) {
         console.error("Erro ao atualizar dados do usuário no Firestore:", error);
     }
