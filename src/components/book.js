@@ -3,6 +3,11 @@ import { getUserDataInDB, updateInDatabase } from "../firebase/data";
 
 const books = JSON.parse(localStorage.getItem("books")) || [];
 
+import editIcon from "../img/edit-icon.png"
+import deleteIcon from "../img/delete-icon.png"
+import arrowLeftIcon from "../img/arrow-left-icon.png"
+import arrowrightIcon from "../img/arrow-right-icon.png"
+
 function Book(link, title, page) {
     return `
         <section class="book-card">
@@ -17,21 +22,21 @@ function Book(link, title, page) {
             </div>
     
             <img
-                src="./img/edit-icon.png"
+                src=${editIcon}
                 alt="Editar"
                 class="editBtn"
             />
             <img
-                src="./img/delete-icon.png"
+                src=${deleteIcon}
                 alt="Excluir"
                 class="deleteBtn"
             />
     
             <div class="page-container">
                 <h3>Página:</h3>
-                <img src="./img/arrow-left-icon.png" alt="Seta para esquerda" class="minusBtn"/>
+                <img src=${arrowLeftIcon} alt="Seta para esquerda" class="minusBtn"/>
                 <p class="page">${page}</p>
-                <img src="./img/arrow-right-icon.png" alt="Seta para direita" class="sumBtn" />
+                <img src=${arrowrightIcon} alt="Seta para direita" class="sumBtn" />
             </div>
         </section>
     `
@@ -50,7 +55,6 @@ const save = async (index) => {
         const userDB = await getUserDataInDB(user.uid);
         let newFavoritesBooks = [...userDB.favoriteBooks];
         newFavoritesBooks[index] = { title, link, page };
-        console.log(newFavoritesBooks)
         renderBooks(newFavoritesBooks);
         await updateInDatabase(user.uid, { favoriteBooks: newFavoritesBooks });
     } else {
@@ -68,16 +72,20 @@ const addBook = async () => {
 
     let newBook = { title, link, page };
 
-    const user = await getUser();
-    if (user) {
-        const userDB = await getUserDataInDB(user.uid);
-        const newFavoritesBooks = [...userDB.favoriteBooks, newBook];
-        renderBooks(newFavoritesBooks);
-        await updateInDatabase(user.uid, { favoriteBooks: newFavoritesBooks });
-    } else {
-        books.push(newBook);
-        localStorage.setItem("books", JSON.stringify(books));
-        renderBooks();;
+    try {
+        const user = await getUser();
+        if (user) {
+            const userDB = await getUserDataInDB(user.uid);
+            const newFavoritesBooks = [...userDB.favoriteBooks, newBook];
+            renderBooks(newFavoritesBooks);
+            await updateInDatabase(user.uid, { favoriteBooks: newFavoritesBooks });
+        } else {
+            books.push(newBook);
+            localStorage.setItem("books", JSON.stringify(books));
+            renderBooks();;
+        }
+    } catch (error) {
+        console.log(error);
     }
 }
 

@@ -2,6 +2,8 @@ import { signInWithGoogle, signOutGoogle, getUser, auth } from "../firebase/auth
 import { getUserDataInDB, addUserInDatabase } from "../firebase/data.js";
 import { renderBooks } from "./book.js";
 
+import userIcon from "../img/user-icon.png";
+
 export default async function sidebarActions() {
 
     const openSidebar = document.querySelector("#openSideBarBtn");
@@ -51,7 +53,7 @@ export default async function sidebarActions() {
 
     signOut.addEventListener("click", () => {
         signOutGoogle();
-        signIn.setAttribute("src", "img/user-icon.png");
+        signIn.setAttribute("src", userIcon);
         signOut.classList.toggle("disable")
     });
 
