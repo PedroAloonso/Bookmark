@@ -52,9 +52,8 @@ header {
     border: 1px solid var(--color2);
     border-radius: 50%;
     padding: 8px;
-    transition: all 300ms ease-in-out;
+    transition: all 400ms ease-in;
 }
-
 
 .disable-button {
     opacity: 0;
@@ -81,7 +80,7 @@ header {
     align-items: center;
     color: var(--color4);
     margin-top: 20px;
-    
+
     height: 10%;
 }
 
@@ -130,7 +129,6 @@ header {
     background-color: rgb(139, 139, 139);
 }
 
-
 main {
     display: flex;
     align-items: center;
@@ -166,7 +164,6 @@ h3 {
     flex-direction: column;
 }
 
-
 .book-card {
     display: flex;
     flex-direction: column;
@@ -197,7 +194,6 @@ h3 {
     position: absolute;
     top: 0;
     right: -5%;
-    /* background-image: linear-gradient(135deg, #ffc2c259 25%, #ff000033 25%, #ff000059 50%, #ffc2c259 50%, #ffc2c259 75%, #ff000059 75%, #ff000059 100%); */
     background-size: 25px 25px;
 }
 
@@ -310,7 +306,68 @@ h3 {
     main {
         width: 70%;
     }
+
+    header {
+        flex-direction: column;
+    }
+
+    #openSideBarBtn {
+        position: initial;
+        background: var(--color3);
+        right: initial;
+    }
+
+    #closeSideBarBtn {
+        top: initial;
+        bottom: 10px;
+
+        rotate: 90deg;
+    }
+
+    .sidebar {
+        position: fixed;
+        right: 0;
+        top: -250px;
+        
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding: 2em 0;
+
+
+        width: 100%;
+        height: fit-content;
+    }
+
+    .sidebar.open {
+        position: relative;
+        top: 0;
+    }
+
+    .disable-button {
+        transition-duration: 1s;
+        position: absolute !important;
+        top: -300px;
+    }
+
+    .sidebar-header {
+        position: initial;
+        margin: 0;
+        height: auto;
+    }
+
+
+    .sidebar-main {
+        height: fit-content;
+    }
+
+    #signOutBtn {
+        box-sizing: border-box;
+        width: 200px;
+        padding: 10px;
+    }
 }
+
 @media (max-width: 700px) {
     #addBookBtn {
         width: 100%;
