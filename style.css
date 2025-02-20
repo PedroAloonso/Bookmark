@@ -319,9 +319,9 @@ h3 {
 
     #closeSideBarBtn {
         top: initial;
-        bottom: 10px;
-
-        rotate: 90deg;
+        bottom: -25px;
+        left: 50%;
+        transform: translate(-50%, -50%)  rotate(-90deg);
     }
 
     .sidebar {
@@ -365,6 +365,7 @@ h3 {
         box-sizing: border-box;
         width: 200px;
         padding: 10px;
+        margin: 0;
     }
 }
 
@@ -388,5 +389,66 @@ h3 {
 
     main {
         width: 90%;
+    }
+
+    header {
+        flex-direction: column;
+    }
+
+    #openSideBarBtn {
+        position: initial;
+        background: var(--color3);
+        right: initial;
+    }
+
+    #closeSideBarBtn {
+        top: initial;
+        bottom: -25px;
+        left: 50%;
+        transform: translate(-50%, -50%)  rotate(-90deg);
+    }
+
+    .sidebar {
+        position: fixed;
+        right: 0;
+        top: -250px;
+        
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding: 2em 0;
+
+
+        width: 100%;
+        height: fit-content;
+    }
+
+    .sidebar.open {
+        position: relative;
+        top: 0;
+    }
+
+    .disable-button {
+        transition-duration: 1s;
+        position: absolute !important;
+        top: -300px;
+    }
+
+    .sidebar-header {
+        position: initial;
+        margin: 0;
+        height: auto;
+    }
+
+
+    .sidebar-main {
+        height: fit-content;
+    }
+
+    #signOutBtn {
+        box-sizing: border-box;
+        width: 200px;
+        padding: 10px;
+        margin: 0;
     }
 }
