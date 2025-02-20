@@ -53,6 +53,7 @@ export default async function sidebarActions() {
 
     signOut.addEventListener("click", () => {
         signOutGoogle();
+        renderBooks();
         signIn.setAttribute("src", userIcon);
         signOut.classList.toggle("disable")
     });

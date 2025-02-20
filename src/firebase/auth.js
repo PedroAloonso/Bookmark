@@ -33,6 +33,8 @@ const getUser = () => {
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 resolve(user);
+            } else {
+                resolve(null);
             }
         });
     });

@@ -74,7 +74,7 @@ const addBook = async () => {
 
     try {
         const user = await getUser();
-        if (user) {
+        if (user !== null) {
             const userDB = await getUserDataInDB(user.uid);
             const newFavoritesBooks = [...userDB.favoriteBooks, newBook];
             renderBooks(newFavoritesBooks);
